@@ -1,0 +1,38 @@
+{
+  "name": "calcjs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:CptHeartless/calcjs.git",
+  "author": "CptHeartless",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "lw-math",
+    "calcjs-app"
+  ],
+  "scripts": {
+    "build:lw-math": "yarn workspace lw-math build",
+    "build:calcjs-app": "yarn workspace calcjs-app build",
+    "test:lw-math": "yarn workspace lw-math test",
+    "test:calcjs-app": "yarn workspace calcjs-app test",
+    "test": "yarn test:lw-math --run && yarn test:calcjs-app --run",
+    "build": "yarn build:lw-math && yarn build:calcjs-app",
+    "dev": "yarn build:lw-math && yarn workspace calcjs-app dev",
+    "preview": "yarn build && yarn workspace calcjs-app preview",
+    "lint": "eslint . --ext .ts,.tsx,.js --ignore-path .gitignore",
+    "lint:fix": "yarn lint --fix",
+    "prettier": "prettier . -c",
+    "prettier:fix": "prettier . --write"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0",
+    "eslint": "^8.46.0",
+    "eslint-config-alloy": "^5.1.1",
+    "eslint-plugin-react": "^7.33.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^3.0.1",
+    "typescript": "^5.1.6"
+  },
+  "packageManager": "yarn@3.6.3"
+}

@@ -1,0 +1,22 @@
+import { IConstantFactor, IFunctionFactor, INode, INumberFactor, IPostfixFactor, IRootFactor, ITerm, TBracketLikeFactor, TExpressionFactor } from './nodeTypes';
+export declare const TermPriority: {
+    "+": number;
+    "-": number;
+    "/": number;
+    "*": number;
+};
+export declare const getNodePriority: (node: INode) => number;
+export declare const getLastNode: (tree: INode, parent?: INode) => [INode, INode | undefined];
+export declare const pushTerm: (tree: TExpressionFactor, term: ITerm) => ITerm | undefined;
+export declare const pushNumberFactor: (tree: TExpressionFactor, factor: INumberFactor) => void;
+export declare const pushConstantFactor: (tree: TExpressionFactor, factor: IConstantFactor) => void;
+export declare const pushPostfixFactor: (tree: TExpressionFactor, factor: IPostfixFactor) => void;
+export declare const pushBracketLikeFactor: (tree: TExpressionFactor, factor: TBracketLikeFactor) => TBracketLikeFactor;
+export declare const pushFunctionFactor: (tree: TExpressionFactor, factor: IFunctionFactor) => IFunctionFactor | undefined;
+export declare const popFromNode: (tree: INode) => void;
+export declare const setValue: (root: IRootFactor, value?: INode | string | number) => void;
+export declare const pop: (root: IRootFactor, defaultValue?: string | number) => void;
+export declare const getLastOpenExpression: (root: IRootFactor) => TExpressionFactor;
+export declare const closeFunctionWithArg: (root: IRootFactor, nextNode?: INode) => void;
+export declare const closeBracket: (root: IRootFactor) => void;
+export declare const push: (root: IRootFactor, node: INode) => void;

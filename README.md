@@ -1,1 +1,1 @@
-# lightweight-calc-app
+# calcjs
