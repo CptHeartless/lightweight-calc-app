@@ -73,6 +73,22 @@ describe('createExpression()', () => {
         }),
       ).toBe('[[1 + 2] * 8');
     });
+
+    it('should apply function with filled argument to a terms', () => {
+      const expression = createExpression();
+      expression.push('-');
+      expression.push('pow(10,');
+
+      expect(expression.render()).toBe('-pow(10, ');
+    });
+
+    it('should NOT apply functions to a terms', () => {
+      const expression = createExpression();
+      expression.push('-');
+      expression.push('pow(,');
+
+      expect(expression.render()).toBe('-');
+    });
   });
 
   describe('.push()', () => {
@@ -434,7 +450,9 @@ describe('createExpression()', () => {
       ['0.5!', 0.886_226_925_452_758_6],
       ['0.25!', 0.906_402_477_055_477_3],
       ['-0.6!', -0.893_515_349_287_690_9],
+      ['-0.6!!', -0.959_560_875_932_301_4],
       ['(-0.6)!', 2.218_159_543_757_687],
+      ['(-0.6)!!', 2.468_482_413_404_682_3],
       ['0!', 1],
       ['pow(2, 8)', 256],
       ['Pi', Math.PI],

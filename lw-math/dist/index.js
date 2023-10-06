@@ -144,13 +144,17 @@ const u = (t) => t.type === "t", M = (t) => t.type === "f", m = (t) => (r) => M(
   M(e) && (!x(e) || e.right) && (e = E(t, y(n.Mul)) ?? e), e.right = r;
 }, lt = (t, r) => {
   let [e, i] = v(t);
-  b(e) && !e.right || u(e) && !e.right || (r.right = (i ?? e).right, (i ?? e).right = r);
+  b(e) && !e.right || u(e) && !e.right || (u(e) ? (r.right = e.right, e.right = r) : (r.right = (i ?? e).right, (i ?? e).right = r));
 }, W = (t, r) => {
   let [e] = v(t);
   return M(e) && (e = E(t, y(n.Mul)) ?? e), e.right = r, r;
 }, ht = (t, r) => {
   let [e, i] = v(t);
-  if (u(e) && e.right && k(e.right) && !r.left && (i = e, e = e.right), !b(e) && i && !r.left)
+  if (u(e) && e.right && k(e.right) && !r.left)
+    i = e, e = e.right;
+  else if (u(e) && !e.right && !r.left)
+    return;
+  if (!b(e) && i && !r.left)
     return r.left = i.right, i.right = r, r.left && r.right && (r.isClosed = !0), r;
   if (r.left)
     return M(e) && !x(e) && (e = E(t, y(n.Mul)) ?? e), e.right = r, r;

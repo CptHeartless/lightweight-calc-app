@@ -117,7 +117,7 @@ export const parseExpression = (str: string) => {
 
     if (token.type === TokenType.Operator) {
       let arg = parseUnaryExpression();
-      if (tokenStream.next(true)?.value?.type === TokenType.PostfixOperator) {
+      while (tokenStream.next(true)?.value?.type === TokenType.PostfixOperator) {
         arg = createPostfixFactor(tokenStream.next().value.value, arg);
       }
       const term = createTerm(token.value);

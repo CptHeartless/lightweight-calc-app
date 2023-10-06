@@ -158,8 +158,13 @@ export const pushPostfixFactor = (tree: TExpressionFactor, factor: IPostfixFacto
     return;
   }
 
-  factor.right = (parent ?? lastNode).right;
-  (parent ?? lastNode).right = factor;
+  if (isTerm(lastNode)) {
+    factor.right = lastNode.right;
+    lastNode.right = factor;
+  } else {
+    factor.right = (parent ?? lastNode).right;
+    (parent ?? lastNode).right = factor;
+  }
 };
 export const pushBracketLikeFactor = (tree: TExpressionFactor, factor: TBracketLikeFactor) => {
   let [lastNode] = getLastNode(tree);
@@ -179,6 +184,8 @@ export const pushFunctionFactor = (tree: TExpressionFactor, factor: IFunctionFac
   if (isTerm(lastNode) && lastNode.right && isBracketsLikeFactor(lastNode.right) && !factor.left) {
     parent = lastNode;
     lastNode = lastNode.right;
+  } else if (isTerm(lastNode) && !lastNode.right && !factor.left) {
+    return;
   }
 
   if (!isRootFactor(lastNode) && parent && !factor.left) {
