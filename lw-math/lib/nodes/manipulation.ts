@@ -65,11 +65,15 @@ const getIsShouldReplaceTerm = (termToReplace: ITerm, term: ITerm): boolean => {
   );
 };
 
+const getIsEmptyUnaryOperator = (node: INode): boolean =>
+  isTerm(node) &&
+  ((!node.left && !node.right) || (!!node.right && isTerm(node.right) && !node.right.left));
+
 export const pushTerm = (tree: TExpressionFactor, term: ITerm): ITerm | undefined => {
   const priority = getNodePriority(term);
   const [node, parent] = getTermByPriority(tree, priority);
 
-  if (isTerm(node) && !node.left && !node.right) {
+  if (getIsEmptyUnaryOperator(node)) {
     return;
   }
 
@@ -181,7 +185,12 @@ export const pushBracketLikeFactor = (tree: TExpressionFactor, factor: TBracketL
 export const pushFunctionFactor = (tree: TExpressionFactor, factor: IFunctionFactor) => {
   let [lastNode, parent] = getLastNode(tree);
 
-  if (isTerm(lastNode) && lastNode.right && isBracketsLikeFactor(lastNode.right) && !factor.left) {
+  if (
+    lastNode.right &&
+    isBracketsLikeFactor(lastNode.right) &&
+    lastNode.right.isClosed &&
+    !factor.left
+  ) {
     parent = lastNode;
     lastNode = lastNode.right;
   } else if (isTerm(lastNode) && !lastNode.right && !factor.left) {

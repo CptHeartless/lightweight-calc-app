@@ -89,6 +89,28 @@ describe('createExpression()', () => {
 
       expect(expression.render()).toBe('-');
     });
+
+    it('should NOT push terms after unary minus', () => {
+      const expression = createExpression();
+      expression.push(1);
+      expression.push('/');
+      expression.push('-');
+      expression.push('/');
+
+      expect(expression.render()).toBe('1 / -');
+    });
+
+    it('should apply functions to an expressions', () => {
+      const expression = createExpression();
+      expression.push('(');
+      expression.push('1');
+      expression.push('+');
+      expression.push('3');
+      expression.push(')');
+      expression.push('pow(,');
+
+      expect(expression.render()).toBe('pow((1 + 3), ');
+    });
   });
 
   describe('.push()', () => {
