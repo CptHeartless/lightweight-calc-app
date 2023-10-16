@@ -1,7 +1,9 @@
 import type { ReactNode, FC } from 'react';
 import { type DefaultTheme, createUseStyles, useTheme } from 'react-jss';
+import clsx from 'clsx';
 
 export interface IGridProps {
+  className?: string;
   templateAreas?: string;
   templateColumns?: string;
   templateRows?: string;
@@ -34,6 +36,7 @@ const useStyles = createUseStyles((theme) => ({
 }));
 
 export const Grid: FC<IGridProps> = ({
+  className,
   templateColumns,
   templateRows,
   templateAreas,
@@ -58,5 +61,5 @@ export const Grid: FC<IGridProps> = ({
     gap,
     theme,
   });
-  return <div className={classes.grid}>{children}</div>;
+  return <div className={clsx(classes.grid, className)}>{children}</div>;
 };

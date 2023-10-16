@@ -2,8 +2,8 @@ import { transparentize } from 'color2k';
 import { ThemeProvider, createUseStyles, useTheme, DefaultTheme } from 'react-jss';
 import { useState, type FC, type MouseEvent } from 'react';
 import clsx from 'clsx';
-import { lightTheme } from '../styles';
-import { Button, type TButtonProps } from './Button';
+import { lightTheme } from '../../styles';
+import { Button, type TButtonProps } from '../Button/Button';
 
 export type TToggleButtonProps<Value extends string | undefined = string | undefined> = {
   selected?: boolean;

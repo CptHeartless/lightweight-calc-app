@@ -10,9 +10,9 @@ import {
 } from 'react';
 import { ThemeProvider, createUseStyles } from 'react-jss';
 import clsx from 'clsx';
-import { lightTheme } from '../styles';
-import { Grid } from './Grid.tsx';
-import { type TToggleButtonProps, ToggleButton } from './ToggleButton';
+import { lightTheme } from '../../styles';
+import { Grid } from '../Grid/Grid';
+import { type TToggleButtonProps, ToggleButton } from '../ToggleButton/ToggleButton';
 
 export interface IToggleButtonGroupProps<V extends string | undefined> {
   children: Array<ReactElement<TToggleButtonProps<V>>>;

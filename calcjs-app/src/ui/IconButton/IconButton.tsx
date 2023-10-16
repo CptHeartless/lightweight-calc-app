@@ -30,9 +30,7 @@ export type TIconButtonProps = {
   className?: string;
 } & JSX.IntrinsicElements['button'];
 
-const IconButton: FC<TIconButtonProps> = ({ className, ...props }) => {
+export const IconButton: FC<TIconButtonProps> = ({ className, ...props }) => {
   const classes = useStyles();
   return <button {...props} className={clsx(classes.root, className)} />;
 };
-
-export default IconButton;

@@ -1,9 +1,8 @@
-import type { FC } from 'react';
+import { useEffect, type FC } from 'react';
 import { createUseStyles } from 'react-jss';
 import { Calculator } from './components/Calculator';
-import { useThemeMode } from './providers/ThemeProvider.tsx';
-import { useMediaQuery } from './hooks/useMediaQuery/useMediaQuery.ts';
-import { useEffect } from 'react';
+import { useThemeMode } from './providers/ThemeProvider';
+import { useMediaQuery } from './hooks';
 
 const useStyles = createUseStyles(({ spacing, palette }) => ({
   app: {

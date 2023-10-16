@@ -1,11 +1,8 @@
 import { useState, type FC, type MouseEvent, useCallback } from 'react';
 import { createUseStyles } from 'react-jss';
-import { useKeyboardEvent } from '../../hooks/useKeyboardEvent/useKeyboardEvent.ts';
-import { Button } from '../../ui/Button';
-import { Grid } from '../../ui/Grid';
-import { ToggleButton } from '../../ui/ToggleButton';
-import { ToggleButtonGroup } from '../../ui/ToggleButtonGroup';
-import { Symbols } from './symbols.ts';
+import { useKeyboardEvent } from '../../hooks';
+import { Button, Grid, ToggleButton, ToggleButtonGroup } from '../../ui';
+import { Symbols } from './symbols';
 
 const Gap = 0.75;
 

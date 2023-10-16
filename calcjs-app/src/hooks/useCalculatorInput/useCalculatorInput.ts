@@ -1,6 +1,11 @@
 import { useCallback, useReducer, useRef } from 'react';
-import { createExpression, type IRenderOptions, type IEvaluateOptions } from 'lw-math';
-import { Symbols } from '../../components/Buttons/symbols.ts';
+import {
+  createExpression,
+  parseExpression,
+  type IRenderOptions,
+  type IEvaluateOptions,
+} from 'lw-math';
+import { Symbols } from '../../components/Buttons/symbols';
 
 export const calculatorDisplayOptions: IRenderOptions = {
   renderBrackets: ({ body, isClosed }) => `(${body}${isClosed ? ')' : Symbols.BracketPlaceholder}`,
@@ -42,6 +47,8 @@ const defaultDisplayState: IDisplayState = {
 export interface IUseCalculatorInputValue {
   push: (node: string | number) => void;
   evaluate: (options?: Partial<IEvaluateOptions>) => number;
+  render: (options?: Partial<IRenderOptions>) => string;
+  setValue: (value: string) => void;
   pop: () => void;
   reset: () => void;
   state: IDisplayState;
@@ -56,6 +63,11 @@ const updateValueAction = (payload: { value: string; isDirty?: boolean }) =>
     type: 'update',
     payload,
   }) as const;
+const setValueAction = (payload: { value: string }) =>
+  ({
+    type: 'set',
+    payload,
+  }) as const;
 const resetAction = () =>
   ({
     type: 'reset',
@@ -63,9 +75,17 @@ const resetAction = () =>
 type TCalculatorDisplayActionType =
   | ReturnType<typeof updateValueAction>
   | ReturnType<typeof evaluateValueAction>
-  | ReturnType<typeof resetAction>;
+  | ReturnType<typeof resetAction>
+  | ReturnType<typeof setValueAction>;
 const displayReducer = (state: IDisplayState, action: TCalculatorDisplayActionType) => {
   switch (action.type) {
+    case 'set': {
+      return {
+        ...defaultDisplayState,
+        value: action.payload.value,
+        isDirty: true,
+      };
+    }
     case 'evaluate': {
       return {
         ...state,
@@ -163,11 +183,28 @@ export const useCalculatorInput = (): IUseCalculatorInputValue => {
     dispatch(resetAction());
   }, []);
 
+  const render = useCallback((options?: Partial<IRenderOptions>) => {
+    return expressionRef.current.render(options);
+  }, []);
+
+  const setValue = useCallback((value: string) => {
+    try {
+      expressionRef.current.setValue(parseExpression(value));
+      dispatch(setValueAction({ value: expressionRef.current.render(calculatorDisplayOptions) }));
+    } catch (e) {
+      if (import.meta.env.DEV) {
+        console.error(e);
+      }
+    }
+  }, []);
+
   return {
+    setValue,
     push,
     state,
     evaluate,
     pop,
     reset,
+    render,
   };
 };

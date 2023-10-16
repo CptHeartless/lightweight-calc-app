@@ -1,8 +1,8 @@
 import { forwardRef } from 'react';
 import { createUseStyles } from 'react-jss';
 import { IoMoonOutline, IoSunnyOutline } from 'react-icons/io5';
-import { useThemeMode } from '../../providers/ThemeProvider.tsx';
-import IconButton from '../../ui/IconButton.tsx';
+import { useThemeMode } from '../../providers/ThemeProvider';
+import { IconButton } from '../../ui';
 
 export interface IDisplayProps {
   value: string;
