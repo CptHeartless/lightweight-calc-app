@@ -1,5 +1,6 @@
 import { useState, type FC, type MouseEvent, useCallback } from 'react';
 import { createUseStyles } from 'react-jss';
+import { useKeyboardEvent } from '../../hooks/useKeyboardEvent/useKeyboardEvent.ts';
 import { Button } from '../../ui/Button';
 import { Grid } from '../../ui/Grid';
 import { ToggleButton } from '../../ui/ToggleButton';
@@ -9,6 +10,47 @@ import { Symbols } from './symbols.ts';
 const Gap = 0.75;
 
 const Numbers = [7, 8, 9, 4, 5, 6, 1, 2, 3, 0];
+
+const AllowedKeyMap: Record<string, string | number> = {
+  Backspace: 'CLEAR',
+  '=': 'EVAL',
+  Enter: 'EVAL',
+  a: 'Ans',
+  s: 'sin(',
+  S: 'arcsin(',
+  c: 'cos(',
+  C: 'arccos(',
+  t: 'tan(',
+  T: 'arctan(',
+  r: 'root(,',
+  R: 'RND',
+  q: 'sqrt(',
+  l: 'ln(',
+  g: 'log(',
+  e: 'e',
+  p: 'Pi',
+  E: 'E',
+  '!': '!',
+  '+': '+',
+  '-': '-',
+  '*': '*',
+  '/': '/',
+  '.': '.',
+  '^': 'pow(,',
+  '%': '%',
+  '(': '(',
+  ')': ')',
+  '1': 1,
+  '2': 2,
+  '3': 3,
+  '4': 4,
+  '5': 5,
+  '6': 6,
+  '7': 7,
+  '8': 8,
+  '9': 9,
+  '0': 0,
+};
 
 export interface IButtonsProps {
   onClick: (event: string | number) => void;
@@ -35,6 +77,37 @@ export const Buttons: FC<IButtonsProps> = ({
 }) => {
   const classes = useStyles();
   const [isInv, setIsInv] = useState(false);
+
+  useKeyboardEvent(
+    useCallback(
+      (event) => {
+        const isKeyAllowed = event.key in AllowedKeyMap;
+        if (!isKeyAllowed) {
+          return;
+        }
+
+        switch (AllowedKeyMap[event.key]) {
+          case 'CLEAR': {
+            onClear();
+            return;
+          }
+          case 'RND': {
+            onClick(Math.random().toFixed(7));
+            return;
+          }
+          case 'EVAL': {
+            onEval();
+            return;
+          }
+          default: {
+            onClick(AllowedKeyMap[event.key]);
+            return;
+          }
+        }
+      },
+      [onClick, onEval, onClear],
+    ),
+  );
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     const { action } = event.currentTarget.dataset;
